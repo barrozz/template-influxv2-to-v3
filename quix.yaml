@@ -46,58 +46,58 @@ deployments:
 #         description: Defines both how often the query should be run against the database and the max age of the data to return. See the InfluxDB documentation for a full list of valid interval values
 #         required: false
 #         value: 1m
-  - name: InfluxDB v3 Sink
-    application: InfluxDB v3 Sink
-    deploymentType: Service
-    version: latest
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: INPUT_TOPIC
-        inputType: InputTopic
-        description: The input topic from which to consume the InfluxDB v2 data 
-        required: false
-        value: influxdb-v2-data
-      - name: INFLUXDB_HOST
-        inputType: FreeText
-        description: The address of the InfluxDB v3 instance
-        required: true
-        value: https://us-east-1-1.aws.cloud2.influxdata.com
-      - name: INFLUXDB_ORG
-        inputType: FreeText
-        description: The configured organization in the InfluxDB v3 instance
-        required: true
-        value: dev
-      - name: INFLUXDB_BUCKET
-        inputType: FreeText
-        description: The name of the InfluxDB v3 bucket to store the synced data
-        required: false
-        value: logs
-      - name: INFLUXDB_TOKEN
-        inputType: Secret
-        description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
-        required: true
-        secretKey: INFLUXDB_V3_TOKEN
-      - name: INFLUXDB_TAG_KEYS
-        inputType: FreeText
-        description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
-        required: false
-        value: "['machineID','barcode','provider']"
-      - name: INFLUXDB_FIELD_KEYS
-        inputType: FreeText
-        description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
-        required: true
-        value: "['temperature','load','power','vibration']"
+#   - name: InfluxDB v3 Sink
+#     application: InfluxDB v3 Sink
+#     deploymentType: Service
+#     version: latest
+#     resources:
+#       cpu: 200
+#       memory: 500
+#       replicas: 1
+#     desiredStatus: Stopped
+#     variables:
+#       - name: INPUT_TOPIC
+#         inputType: InputTopic
+#         description: The input topic from which to consume the InfluxDB v2 data 
+#         required: false
+#         value: influxdb-v2-data
+#       - name: INFLUXDB_HOST
+#         inputType: FreeText
+#         description: The address of the InfluxDB v3 instance
+#         required: true
+#         value: https://us-east-1-1.aws.cloud2.influxdata.com
+#       - name: INFLUXDB_ORG
+#         inputType: FreeText
+#         description: The configured organization in the InfluxDB v3 instance
+#         required: true
+#         value: dev
+#       - name: INFLUXDB_BUCKET
+#         inputType: FreeText
+#         description: The name of the InfluxDB v3 bucket to store the synced data
+#         required: false
+#         value: logs
+#       - name: INFLUXDB_TOKEN
+#         inputType: Secret
+#         description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
+#         required: true
+#         secretKey: INFLUXDB_V3_TOKEN
+#       - name: INFLUXDB_TAG_KEYS
+#         inputType: FreeText
+#         description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
+#         required: false
+#         value: "['machineID','barcode','provider']"
+#       - name: INFLUXDB_FIELD_KEYS
+#         inputType: FreeText
+#         description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
+#         required: true
+#         value: "['temperature','load','power','vibration']"
 
-# This section describes the Topics of the data pipeline
-topics:
-  - name: influxdb-v2-data
-    persisted: false
-    configuration:
-      partitions: 1
-      replicationFactor: 2
-      retentionInMinutes: 1440
-      retentionInBytes: 52428800
+# # This section describes the Topics of the data pipeline
+# topics:
+#   - name: influxdb-v2-data
+#     persisted: false
+#     configuration:
+#       partitions: 1
+#       replicationFactor: 2
+#       retentionInMinutes: 1440
+#       retentionInBytes: 52428800
