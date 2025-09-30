@@ -12,7 +12,9 @@ variables:
     required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
+    multiline: false
     description: InfluxDB v2 authentication token
+    defaultValue: INFLUXDB_V2_TOKEN
     required: true
   - name: INFLUXDB_ORG
     inputType: FreeText
