@@ -3,7 +3,9 @@ language: python
 variables:
   - name: output
     inputType: OutputTopic
+    multiline: false
     description: Quix topic to publish data to
+    defaultValue: influxdb-v2-data
     required: true
   - name: INFLUXDB_URL
     inputType: FreeText
