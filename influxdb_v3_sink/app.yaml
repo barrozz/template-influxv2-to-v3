@@ -8,7 +8,7 @@ variables:
     inputType: FreeText
     multiline: false
     description: The address of the InfluxDB v3 instance
-    defaultValue: influx.bermad.io
+    defaultValue: https://us-east-1-1.aws.cloud2.influxdata.com
     required: true
   - name: INFLUXDB_ORG
     inputType: FreeText
