@@ -40,7 +40,7 @@ deployments:
         inputType: Secret
         description: The configured API Token to access the InfluxDB v2 instance (defined as a secret in Quix)
         required: true
-        secretKey: Zk8O3hxhwnWY7sHbmGKs0lnS2WP6zVPGVk7N57khyNoJ3PPIIOoaWmISLCIHD5edYaFEdkTZFtfikDojvd5b1Q==
+        secretKey: INFLUXDB_V2_TOKEN 
       - name: TASK_INTERVAL
         inputType: FreeText
         description: Defines both how often the query should be run against the database and the max age of the data to return. See the InfluxDB documentation for a full list of valid interval values
@@ -80,7 +80,7 @@ deployments:
         inputType: Secret
         description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
         required: true
-        secretKey: YBBhCdQ9ohkq78HEKYfY8W58zFiyMg66DhinC6IKjvnqpWss0vXFDloUe4L-1G0qckE8LlNHe9lCXgYZwSBxTQ==
+        secretKey: INFLUXDB_V3_TOKEN
       - name: INFLUXDB_TAG_KEYS
         inputType: FreeText
         description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
