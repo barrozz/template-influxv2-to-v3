@@ -1,71 +1,47 @@
-name: InfluxDB_v2_to_v3
-language: python
-variables:
-  - name: input
-    inputType: InputTopic
-    description: Name of the input topic to listen to.
-    defaultValue: csv-data
-  - name: output
-    inputType: OutputTopic
-    description: Name of the output topic to write to.
-    defaultValue: transform
-dockerfile: dockerfile
-runEntryPoint: main.py
-defaultFile: main.py
-libraryItemId: starter-transformation
 name: InfluxDB v2 Source
 language: python
-deploymentType: Service
-
 variables:
   - name: output
     inputType: OutputTopic
     description: Quix topic to publish data to
     required: true
-    
   - name: INFLUXDB_URL
     inputType: FreeText
     description: URL of your InfluxDB v2 instance
-    required: true
     defaultValue: http://influx.bermad.io
-
+    required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
     description: InfluxDB v2 authentication token
     required: true
-    
   - name: INFLUXDB_ORG
     inputType: FreeText
+    multiline: false
     description: InfluxDB v2 organization name
+    defaultValue: primary
     required: true
-    defaultValue: myorg
-
   - name: INFLUXDB_BUCKET
     inputType: FreeText
     description: InfluxDB v2 bucket name to read from
-    required: true
     defaultValue: mybucket
-
+    required: true
   - name: MEASUREMENT
     inputType: FreeText
     description: Measurement to filter
-    required: false
-    defaultValue: "*"
-
+    defaultValue: '*'
   - name: START_TIME
     inputType: FreeText
     description: Start time for data query
-    required: false
-    defaultValue: "-7d"
-
+    defaultValue: -7d
   - name: QUERY_INTERVAL_SECONDS
     inputType: FreeText
     description: Interval between queries in seconds
-    required: false
-    defaultValue: "60"
-
+    defaultValue: 60
   - name: BATCH_SIZE
     inputType: FreeText
     description: Number of records to fetch per query
-    required: false
-    defaultValue: "1000"
+    defaultValue: 1000
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py
+libraryItemId: starter-transformation
