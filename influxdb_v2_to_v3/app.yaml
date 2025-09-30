@@ -13,3 +13,59 @@ dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
 libraryItemId: starter-transformation
+name: InfluxDB v2 Source
+language: python
+deploymentType: Service
+
+variables:
+  - name: output
+    inputType: OutputTopic
+    description: Quix topic to publish data to
+    required: true
+    
+  - name: INFLUXDB_URL
+    inputType: FreeText
+    description: URL of your InfluxDB v2 instance
+    required: true
+    defaultValue: http://influx.bermad.io
+
+  - name: INFLUXDB_TOKEN
+    inputType: Secret
+    description: InfluxDB v2 authentication token
+    required: true
+    
+  - name: INFLUXDB_ORG
+    inputType: FreeText
+    description: InfluxDB v2 organization name
+    required: true
+    defaultValue: myorg
+
+  - name: INFLUXDB_BUCKET
+    inputType: FreeText
+    description: InfluxDB v2 bucket name to read from
+    required: true
+    defaultValue: mybucket
+
+  - name: MEASUREMENT
+    inputType: FreeText
+    description: Measurement to filter
+    required: false
+    defaultValue: "*"
+
+  - name: START_TIME
+    inputType: FreeText
+    description: Start time for data query
+    required: false
+    defaultValue: "-7d"
+
+  - name: QUERY_INTERVAL_SECONDS
+    inputType: FreeText
+    description: Interval between queries in seconds
+    required: false
+    defaultValue: "60"
+
+  - name: BATCH_SIZE
+    inputType: FreeText
+    description: Number of records to fetch per query
+    required: false
+    defaultValue: "1000"
