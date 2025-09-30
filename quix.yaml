@@ -6,46 +6,46 @@ metadata:
 
 # This section describes the Deployments of the data pipeline
 deployments:
-#   - name: InfluxDB v2 Source
-#     application: InfluxDB v2 Source
-#     deploymentType: Service
-#     version: latest
-#     resources:
-#       cpu: 200
-#       memory: 500
-#       replicas: 1
-#     desiredStatus: Stopped
-#     variables:
-#       - name: OUTPUT_TOPIC
-#         inputType: OutputTopic
-#         description: The output topic to store the results fetched from the InfluxDB v2 queries
-#         required: true
-#         value: influxdb-v2-data
-#       - name: INFLUXDB_HOST
-#         inputType: FreeText
-#         description: The address of the InfluxDB v2 instance
-#         required: true
-#         value: https://influx.bermad.io
-#       - name: INFLUXDB_ORG
-#         inputType: FreeText
-#         description: The configured organization in the InfluxDB v2 instance
-#         required: true
-#         value: primary
-#       - name: INFLUXDB_BUCKET
-#         inputType: FreeText
-#         description: The name of the InfluxDB v2 bucket that stores the source data to be synced
-#         required: true
-#         value: logs
-#       - name: INFLUXDB_TOKEN
-#         inputType: Secret
-#         description: The configured API Token to access the InfluxDB v2 instance (defined as a secret in Quix)
-#         required: true
-#         secretKey: INFLUXDB_V2_TOKEN 
-#       - name: TASK_INTERVAL
-#         inputType: FreeText
-#         description: Defines both how often the query should be run against the database and the max age of the data to return. See the InfluxDB documentation for a full list of valid interval values
-#         required: false
-#         value: 1m
+  - name: InfluxDB v2 Source
+    application: InfluxDB v2 Source
+    deploymentType: Service
+    version: latest
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Stopped
+    variables:
+      - name: OUTPUT_TOPIC
+        inputType: OutputTopic
+        description: The output topic to store the results fetched from the InfluxDB v2 queries
+        required: true
+        value: influxdb-v2-data
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: The address of the InfluxDB v2 instance
+        required: true
+        value: https://influx.bermad.io
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: The configured organization in the InfluxDB v2 instance
+        required: true
+        value: primary
+      - name: INFLUXDB_BUCKET
+        inputType: FreeText
+        description: The name of the InfluxDB v2 bucket that stores the source data to be synced
+        required: true
+        value: logs
+      - name: INFLUXDB_TOKEN
+        inputType: Secret
+        description: The configured API Token to access the InfluxDB v2 instance (defined as a secret in Quix)
+        required: true
+        secretKey: INFLUXDB_V2_TOKEN 
+      - name: TASK_INTERVAL
+        inputType: FreeText
+        description: Defines both how often the query should be run against the database and the max age of the data to return. See the InfluxDB documentation for a full list of valid interval values
+        required: false
+        value: 1m
   - name: InfluxDB v3 Sink
     application: InfluxDB v3 Sink
     deploymentType: Service
