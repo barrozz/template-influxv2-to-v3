@@ -25,17 +25,17 @@ deployments:
         inputType: FreeText
         description: The address of the InfluxDB v2 instance
         required: true
-        value: <INFLUXDB_HOST>
+        value: https://influx.bermad.io
       - name: INFLUXDB_ORG
         inputType: FreeText
         description: The configured organization in the InfluxDB v2 instance
         required: true
-        value: <INFLUXDB_ORG>
+        value: primary
       - name: INFLUXDB_BUCKET
         inputType: FreeText
         description: The name of the InfluxDB v2 bucket that stores the source data to be synced
         required: true
-        value: <INFLUXDB_BUCKET>
+        value: logs
       - name: INFLUXDB_TOKEN
         inputType: Secret
         description: The configured API Token to access the InfluxDB v2 instance (defined as a secret in Quix)
@@ -70,12 +70,12 @@ deployments:
         inputType: FreeText
         description: The configured organization in the InfluxDB v3 instance
         required: true
-        value: <INFLUXDB_ORG>
+        value: dev
       - name: INFLUXDB_BUCKET
         inputType: FreeText
         description: The name of the InfluxDB v3 bucket to store the synced data
         required: false
-        value: <INFLUXDB_BUCKET>
+        value: logs
       - name: INFLUXDB_TOKEN
         inputType: Secret
         description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
