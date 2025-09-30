@@ -23,7 +23,9 @@ variables:
     defaultValue: logs
   - name: INFLUXDB_TOKEN
     inputType: Secret
+    multiline: false
     description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
+    defaultValue: INFLUXDB_V3_TOKEN
     required: true
   - name: INFLUXDB_TAG_KEYS
     inputType: FreeText
