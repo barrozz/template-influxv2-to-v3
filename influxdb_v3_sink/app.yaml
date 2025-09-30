@@ -14,7 +14,7 @@ variables:
     inputType: FreeText
     multiline: false
     description: The configured organization in the InfluxDB v3 instance
-    defaultValue: primary
+    defaultValue: dev
     required: true
   - name: INFLUXDB_BUCKET
     inputType: FreeText
