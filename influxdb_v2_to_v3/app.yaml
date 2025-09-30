@@ -22,8 +22,9 @@ variables:
     required: true
   - name: INFLUXDB_BUCKET
     inputType: FreeText
+    multiline: false
     description: InfluxDB v2 bucket name to read from
-    defaultValue: mybucket
+    defaultValue: logs
     required: true
   - name: MEASUREMENT
     inputType: FreeText
