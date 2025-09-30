@@ -18,7 +18,9 @@ variables:
     required: true
   - name: INFLUXDB_BUCKET
     inputType: FreeText
+    multiline: false
     description: The name of the InfluxDB v3 bucket to store the synced data
+    defaultValue: logs
   - name: INFLUXDB_TOKEN
     inputType: Secret
     description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
