@@ -3,39 +3,31 @@ language: python
 variables:
   - name: INPUT_TOPIC
     inputType: InputTopic
-    description: The input topic from which to consume the InfluxDB v2 data 
-    required: false
-    value: influxdb-v2-data
+    description: The input topic from which to consume the InfluxDB v2 data
   - name: INFLUXDB_HOST
     inputType: FreeText
+    multiline: false
     description: The address of the InfluxDB v3 instance
+    defaultValue: influx.bermad.io
     required: true
-    value: https://us-east-1-1.aws.cloud2.influxdata.com
   - name: INFLUXDB_ORG
     inputType: FreeText
     description: The configured organization in the InfluxDB v3 instance
     required: true
-    value: <INFLUXDB_ORG>
   - name: INFLUXDB_BUCKET
     inputType: FreeText
     description: The name of the InfluxDB v3 bucket to store the synced data
-    required: false
-    value: <INFLUXDB_BUCKET>
   - name: INFLUXDB_TOKEN
     inputType: Secret
     description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
     required: true
-    secretKey: INFLUXDB_TOKEN
   - name: INFLUXDB_TAG_KEYS
     inputType: FreeText
     description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
-    required: false
-    value: "['machineID','barcode','provider']"
   - name: INFLUXDB_FIELD_KEYS
     inputType: FreeText
     description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
     required: true
-    value: "['temperature','load','power','vibration']"
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
