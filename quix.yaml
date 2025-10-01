@@ -52,10 +52,4 @@ deployments:
 
 # This section describes the Topics of the data pipeline
 topics:
-  - name: influxdb-v2-data
-    configuration:
-      partitions: 1
-      replicationFactor: 2
-      retentionInMinutes: 1440
-      retentionInBytes: 52428800
   - name: influxdbv2-data
