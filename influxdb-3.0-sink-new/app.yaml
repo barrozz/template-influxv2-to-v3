@@ -50,6 +50,11 @@ variables:
     inputType: FreeText
     description: The number of seconds that sink holds before flush data to the InfluxDb
     defaultValue: 1
+  - name: INFLUXDB_BUCKET
+    inputType: FreeText
+    multiline: false
+    description: The name of the InfluxDB v3 bucket to store the synced data
+    defaultValue: logs
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
