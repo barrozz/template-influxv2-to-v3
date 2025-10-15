@@ -34,9 +34,6 @@ variables:
     inputType: FreeText
     description: 'The fields to include when writing the measurement data. Example: Field1,Field2'
     defaultValue: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
-  - name: TIMESTAMP_COLUMN
-    inputType: FreeText
-    description: 'The column containing the timestamp column. NOTE: Must be nanoseconds'
   - name: INFLUXDB_BUCKET
     inputType: FreeText
     multiline: false
