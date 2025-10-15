@@ -33,7 +33,7 @@ influxdb2_client = influxdb_client.InfluxDBClient(
     token=os.environ["INFLUXDB_TOKEN"],
     org=os.environ["INFLUXDB_ORG"],
     url=os.environ['INFLUXDB_HOST'],
-    timeout=120_000  # 5 minutes in milliseconds
+    # timeout=120_000  # 5 minutes in milliseconds
 )
 
 query_api = influxdb2_client.query_api()
