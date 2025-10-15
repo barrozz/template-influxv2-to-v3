@@ -14,8 +14,9 @@ variables:
     required: true
   - name: INFLUXDB_HOST
     inputType: FreeText
+    multiline: false
     description: Host address for the InfluxDB instance.
-    defaultValue: eu-central-1-1.aws.cloud2.influxdata.com
+    defaultValue: https://influx.bermad.io
     required: true
   - name: INFLUXDB_TOKEN
     inputType: FreeText
