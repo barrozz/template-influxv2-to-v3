@@ -137,3 +137,4 @@ deployments:
 # This section describes the Topics of the data pipeline
 topics:
   - name: influxdbv2-data
+  - name: input-data
