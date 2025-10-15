@@ -46,10 +46,6 @@ variables:
     inputType: FreeText
     description: The number of records that sink holds before flush data to the InfluxDb
     defaultValue: 1000
-  - name: BUFFER_TIMEOUT
-    inputType: FreeText
-    description: The number of seconds that sink holds before flush data to the InfluxDb
-    defaultValue: 1
   - name: INFLUXDB_BUCKET
     inputType: FreeText
     multiline: false
