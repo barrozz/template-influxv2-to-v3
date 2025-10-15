@@ -14,6 +14,7 @@ variables:
     required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
+    multiline: false
     description: Authentication token to access InfluxDB.
     defaultValue: INFLUXDB_V3_TOKEN
     required: true
