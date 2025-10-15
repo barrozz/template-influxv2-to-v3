@@ -32,7 +32,7 @@ topic = app.topic(topic_name)
 influxdb2_client = influxdb_client.InfluxDBClient(
     token=os.environ["INFLUXDB_TOKEN"],
     org=os.environ["INFLUXDB_ORG"],
-    url=os.environ['INFLUXDB_HOST']
+    url=os.environ['INFLUXDB_HOST'],
     timeout=300_000  # 5 minutes in milliseconds
 )
 
