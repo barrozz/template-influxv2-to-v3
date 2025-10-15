@@ -8,8 +8,9 @@ variables:
     required: true
   - name: task_interval
     inputType: FreeText
+    multiline: false
     description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
-    defaultValue: 5m
+    defaultValue: 60d
     required: true
   - name: INFLUXDB_HOST
     inputType: FreeText
