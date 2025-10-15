@@ -29,9 +29,12 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
-influxdb2_client = influxdb_client.InfluxDBClient(token=os.environ["INFLUXDB_TOKEN"],
-                        org=os.environ["INFLUXDB_ORG"],
-                        url=os.environ['INFLUXDB_HOST'])
+influxdb2_client = influxdb_client.InfluxDBClient(
+    token=os.environ["INFLUXDB_TOKEN"],
+    org=os.environ["INFLUXDB_ORG"],
+    url=os.environ['INFLUXDB_HOST']
+    timeout=300_000  # 5 minutes in milliseconds
+)
 
 query_api = influxdb2_client.query_api()
 
