@@ -42,10 +42,6 @@ variables:
   - name: TIMESTAMP_COLUMN
     inputType: FreeText
     description: 'The column containing the timestamp column. NOTE: Must be nanoseconds'
-  - name: BUFFER_SIZE
-    inputType: FreeText
-    description: The number of records that sink holds before flush data to the InfluxDb
-    defaultValue: 1000
   - name: INFLUXDB_BUCKET
     inputType: FreeText
     multiline: false
