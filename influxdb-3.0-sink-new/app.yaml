@@ -3,8 +3,9 @@ language: python
 variables:
   - name: input
     inputType: InputTopic
+    multiline: false
     description: This is the input topic
-    defaultValue: input-data
+    defaultValue: influxdbv2-data
     required: true
   - name: INFLUXDB_HOST
     inputType: FreeText
