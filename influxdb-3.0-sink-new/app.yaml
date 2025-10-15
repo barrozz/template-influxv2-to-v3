@@ -35,6 +35,11 @@ variables:
     multiline: false
     description: The name of the InfluxDB v3 bucket to store the synced data
     defaultValue: logs
+  - name: INFLUXDB_DATABASE
+    inputType: FreeText
+    multiline: false
+    defaultValue: logs
+    required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
