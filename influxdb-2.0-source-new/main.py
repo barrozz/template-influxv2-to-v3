@@ -44,7 +44,7 @@ bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
 # Backfill settings
 backfill_enabled = os.environ.get("BACKFILL_ENABLED", "true").lower() == "true"
 backfill_start = os.environ.get("BACKFILL_START", "-60d")
-backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "1d")
+backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "3h") # 1d,
 
 # Global variable to control the main loop's execution
 run = True
