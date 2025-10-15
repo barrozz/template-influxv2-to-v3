@@ -21,11 +21,6 @@ variables:
     inputType: FreeText
     description: Organization name in InfluxDB.
     defaultValue: dev
-  - name: INFLUXDB_DATABASE
-    inputType: FreeText
-    description: Database name in InfluxDB where data should be stored.
-    defaultValue: logs
-    required: true
   - name: INFLUXDB_TAG_KEYS
     inputType: FreeText
     description: 'The tags to include when writing the measurement data. Example: Tag1,Tag2'
