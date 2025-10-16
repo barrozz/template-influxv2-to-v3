@@ -130,24 +130,78 @@ def query_influx_range(start_time, end_time):
         logger.error(f"Query failed for range {start_time} to {end_time}: {e}")
         raise
 
+# def backfill_historical_data():
+#     """Backfill historical data in chunks"""
+#     logger.info(f"Starting backfill from {backfill_start} in {backfill_chunk_size} chunks")
+    
+#     # Calculate time ranges
+#     now = datetime.utcnow()
+#     start_delta = interval_to_timedelta(backfill_start.replace('-', ''))
+#     chunk_delta = interval_to_timedelta(backfill_chunk_size)
+    
+#     start_time = now - start_delta
+#     current_time = start_time
+    
+#     while current_time < now:
+#         end_time = min(current_time + chunk_delta, now)
+        
+#         # Format times for Flux query
+#         start_str = current_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+#         end_str = end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        
+#         try:
+#             for result in query_influx_range(start_str, end_str):
+#                 yield result
+#         except Exception as e:
+#             logger.error(f"Failed to backfill chunk {start_str} to {end_str}: {e}")
+#             # Continue with next chunk even if this one fails
+        
+#         current_time = end_time
+#         sleep(1)  # Small delay between chunks to avoid overwhelming the server
+    
+#     logger.info("Backfill completed")
+
+
 def backfill_historical_data():
     """Backfill historical data in chunks"""
     logger.info(f"Starting backfill from {backfill_start} in {backfill_chunk_size} chunks")
     
     # Calculate time ranges
     now = datetime.utcnow()
-    start_delta = interval_to_timedelta(backfill_start.replace('-', ''))
-    chunk_delta = interval_to_timedelta(backfill_chunk_size)
     
-    start_time = now - start_delta
+    # Parse start time - support both date format and interval format
+    if backfill_start.startswith('-'):
+        # Relative format like "-60d"
+        start_delta = interval_to_timedelta(backfill_start.replace('-', ''))
+        start_time = now - start_delta
+    else:
+        # Absolute date format like "2025-01-01"
+        try:
+            start_time = datetime.strptime(backfill_start, '%Y-%m-%d')
+        except ValueError:
+            try:
+                start_time = datetime.strptime(backfill_start, '%Y-%m-%dT%H:%M:%SZ')
+            except ValueError:
+                logger.error(f"Invalid BACKFILL_START format: {backfill_start}. Use YYYY-MM-DD or -XXd")
+                return
+    
+    chunk_delta = interval_to_timedelta(backfill_chunk_size)
     current_time = start_time
+    
+    logger.info(f"Backfilling from {start_time} to {now} ({(now - start_time).days} days)")
+    
+    chunk_count = 0
+    total_chunks = int((now - start_time).total_seconds() / chunk_delta.total_seconds())
     
     while current_time < now:
         end_time = min(current_time + chunk_delta, now)
+        chunk_count += 1
         
         # Format times for Flux query
         start_str = current_time.strftime('%Y-%m-%dT%H:%M:%SZ')
         end_str = end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        
+        logger.info(f"Processing chunk {chunk_count}/{total_chunks}: {start_str} to {end_str}")
         
         try:
             for result in query_influx_range(start_str, end_str):
@@ -159,7 +213,7 @@ def backfill_historical_data():
         current_time = end_time
         sleep(1)  # Small delay between chunks to avoid overwhelming the server
     
-    logger.info("Backfill completed")
+    logger.info(f"Backfill completed: processed {chunk_count} chunks")
 
 # def is_dataframe(result):
 #     return type(result).__name__ == 'DataFrame'
