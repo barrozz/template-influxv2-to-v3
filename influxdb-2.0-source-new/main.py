@@ -230,45 +230,45 @@ def get_data():
             yield result
         logger.info("Backfill completed, switching to continuous mode")
     
-    # Run in continuous mode ????????? ******** +++++++++++
-    while run:
-        try:            
-            # Query InfluxDB 2.0 using flux
-            flux_query = f'''
-            from(bucket: "{bucket}")
-                |> range(start: -{interval})
-                |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-            '''
-            logger.info(f"Sending query: {flux_query}")
+    # Run in continuous mode ******** +++++++++++ ++++++++++++++++++++
+    # while run:
+    #     try:            
+    #         # Query InfluxDB 2.0 using flux
+    #         flux_query = f'''
+    #         from(bucket: "{bucket}")
+    #             |> range(start: -{interval})
+    #             |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+    #         '''
+    #         logger.info(f"Sending query: {flux_query}")
 
-            table = query_api.query_data_frame(query=flux_query,org=os.environ['INFLUXDB_ORG'])
+    #         table = query_api.query_data_frame(query=flux_query,org=os.environ['INFLUXDB_ORG'])
 
-            # Renaming time column to distinguish it from other timestamp types
-            # table.rename(columns={'_time': 'original_time'}, inplace=True)
+    #         # Renaming time column to distinguish it from other timestamp types
+    #         # table.rename(columns={'_time': 'original_time'}, inplace=True)
 
-            # If the query returns tables with different schemas, the result will be a list of dataframes.
-            if isinstance(table, list):
-                for item in table:
-                    item.rename(columns={'_time': 'original_time'}, inplace=True)
-                    json_result = item.to_json(orient='records', date_format='iso')
-                    yield json_result
-                    logger.info("Published multiple measurements to Quix")
-            elif is_dataframe(table) and len(table) > 0:
-                    table.rename(columns={'_time': 'original_time'}, inplace=True)
-                    json_result = table.to_json(orient='records', date_format='iso')
-                    yield json_result
-                    logger.info("Published single measurement to Quix")
-            elif is_dataframe(table) and len(table) < 1:
-                    logger.info("No results.")
+    #         # If the query returns tables with different schemas, the result will be a list of dataframes.
+    #         if isinstance(table, list):
+    #             for item in table:
+    #                 item.rename(columns={'_time': 'original_time'}, inplace=True)
+    #                 json_result = item.to_json(orient='records', date_format='iso')
+    #                 yield json_result
+    #                 logger.info("Published multiple measurements to Quix")
+    #         elif is_dataframe(table) and len(table) > 0:
+    #                 table.rename(columns={'_time': 'original_time'}, inplace=True)
+    #                 json_result = table.to_json(orient='records', date_format='iso')
+    #                 yield json_result
+    #                 logger.info("Published single measurement to Quix")
+    #         elif is_dataframe(table) and len(table) < 1:
+    #                 logger.info("No results.")
 
-            logger.info(f"Trying again in {interval_seconds} seconds...")
-            sleep(interval_seconds)
+    #         logger.info(f"Trying again in {interval_seconds} seconds...")
+    #         sleep(interval_seconds)
 
-        except Exception as e:
-            logger.info("query failed")
-            logger.info(f"error: {e}")
-            flush=True
-            sleep(1)
+    #     except Exception as e:
+    #         logger.info("query failed")
+    #         logger.info(f"error: {e}")
+    #         flush=True
+    #         sleep(1)
 
 
 
