@@ -178,3 +178,4 @@ deployments:
 topics:
   - name: influxdbv2-data
   - name: influxdbv2-data-NEW
+  - name: input-data
