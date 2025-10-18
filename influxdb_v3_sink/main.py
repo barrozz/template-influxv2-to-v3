@@ -56,8 +56,15 @@ def send_data_to_influx(message):
         # Uses the current time as the timestamp for writing to the sink
         # Adjust to use an alternative timestamp if necesssary,
 
-        writetime = datetime.datetime.utcnow()
-        writetime = writetime.isoformat(timespec="milliseconds") + "Z"
+        # writetime = datetime.datetime.utcnow()
+        # writetime = writetime.isoformat(timespec="milliseconds") + "Z"
+
+        if "original_time" in message:
+            writetime = message["original_time"]
+            logger.info(f"Using original timestamp: {writetime}")
+        else:
+            writetime = datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z"
+            logger.warning(f"No original_time found, using current time: {writetime}")
         
         measurement_name = message["_measurement"]
 
