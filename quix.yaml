@@ -51,7 +51,7 @@ deployments:
         value: <INSERT MEASUREMENT>
   - name: InfluxDB v3 Sink
     application: influxdb_v3_sink
-    version: 9daf7a82342d49516d3b247b2af2708b27368d18
+    version: 4329d00b980f229618e89a2e535eb35f4696fe33
     deploymentType: Service
     resources:
       cpu: 200
