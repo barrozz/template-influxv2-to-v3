@@ -92,7 +92,7 @@ def send_data_to_influx(message):
             "time": writetime
         }
 
-        logger.info(f"MEASUREMENT: {measurement_name},TAGS: {tags}, FIELDS: {fields}, TIME: {writetime}")
+        logger.info(f"MEASUREMENT: {measurement_name}, TAGS: {tags}, FIELDS: {fields}, TIME: {writetime}")
 
         influxdb3_client.write(record=points, write_precision="ms")
         
