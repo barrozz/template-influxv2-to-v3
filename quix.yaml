@@ -103,7 +103,7 @@ deployments:
         inputType: OutputTopic
         description: This is the Kafka topic that will receive the query results
         required: true
-        value: influxdbv2-data-NEW
+        value: may-to-july-25
       - name: task_interval
         inputType: FreeText
         description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
