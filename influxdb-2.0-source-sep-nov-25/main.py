@@ -42,9 +42,10 @@ interval = os.environ.get("task_interval", "5m")
 bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
 
 # Backfill settings
-backfill_enabled = os.environ.get("BACKFILL_ENABLED", "true").lower() == "true"
-backfill_start = os.environ.get("BACKFILL_START", "-171d")
-backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "6h") # 1d,
+backfill_enabled = os.environ.get("BACKFILL_ENABLED", "false").lower() == "true"
+backfill_start = os.environ.get("BACKFILL_START", "2025-08-01")     # Can be YYYY-MM-DD or -60d format
+backfill_end = os.environ.get("BACKFILL_END", "2025-11-01")         # Optional: YYYY-MM-DD format, empty means "now"
+backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "1d")
 
 # Global variable to control the main loop's execution
 run = True
@@ -130,37 +131,6 @@ def query_influx_range(start_time, end_time):
         logger.error(f"Query failed for range {start_time} to {end_time}: {e}")
         raise
 
-# def backfill_historical_data():
-#     """Backfill historical data in chunks"""
-#     logger.info(f"Starting backfill from {backfill_start} in {backfill_chunk_size} chunks")
-    
-#     # Calculate time ranges
-#     now = datetime.utcnow()
-#     start_delta = interval_to_timedelta(backfill_start.replace('-', ''))
-#     chunk_delta = interval_to_timedelta(backfill_chunk_size)
-    
-#     start_time = now - start_delta
-#     current_time = start_time
-    
-#     while current_time < now:
-#         end_time = min(current_time + chunk_delta, now)
-        
-#         # Format times for Flux query
-#         start_str = current_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-#         end_str = end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-        
-#         try:
-#             for result in query_influx_range(start_str, end_str):
-#                 yield result
-#         except Exception as e:
-#             logger.error(f"Failed to backfill chunk {start_str} to {end_str}: {e}")
-#             # Continue with next chunk even if this one fails
-        
-#         current_time = end_time
-#         sleep(1)  # Small delay between chunks to avoid overwhelming the server
-    
-#     logger.info("Backfill completed")
-
 
 def backfill_historical_data():
     """Backfill historical data in chunks"""
@@ -184,7 +154,23 @@ def backfill_historical_data():
             except ValueError:
                 logger.error(f"Invalid BACKFILL_START format: {backfill_start}. Use YYYY-MM-DD or -XXd")
                 return
+
+    # Parse end time - if specified, use it; otherwise use now
+    if backfill_end:
+        try:
+            end_time = datetime.strptime(backfill_end, '%Y-%m-%d')
+        except ValueError:
+            try:
+                end_time = datetime.strptime(backfill_end, '%Y-%m-%dT%H:%M:%SZ')
+            except ValueError:
+                logger.error(f"Invalid BACKFILL_END format: {backfill_end}. Use YYYY-MM-DD")
+                return
+        logger.info(f"Using specified end time: {end_time}")
+    else:
+        end_time = now
+        logger.info(f"No end time specified, using current time: {end_time}")
     
+
     chunk_delta = interval_to_timedelta(backfill_chunk_size)
     current_time = start_time
     
@@ -193,13 +179,13 @@ def backfill_historical_data():
     chunk_count = 0
     total_chunks = int((now - start_time).total_seconds() / chunk_delta.total_seconds())
     
-    while current_time < now:
-        end_time = min(current_time + chunk_delta, now)
+    while current_time < end_time:
+        chunk_end_time = min(current_time + chunk_delta, end_time)
         chunk_count += 1
         
         # Format times for Flux query
         start_str = current_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-        end_str = end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        end_str = chunk_end_time.strftime('%Y-%m-%dT%H:%M:%SZ')
         
         logger.info(f"Processing chunk {chunk_count}/{total_chunks}: {start_str} to {end_str}")
         
@@ -230,49 +216,6 @@ def get_data():
             yield result
         logger.info("Backfill completed, switching to continuous mode")
     
-    # Run in continuous mode ******** +++++++++++ ++++++++++++++++++++
-    # while run:
-    #     try:            
-    #         # Query InfluxDB 2.0 using flux
-    #         flux_query = f'''
-    #         from(bucket: "{bucket}")
-    #             |> range(start: -{interval})
-    #             |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-    #         '''
-    #         logger.info(f"Sending query: {flux_query}")
-
-    #         table = query_api.query_data_frame(query=flux_query,org=os.environ['INFLUXDB_ORG'])
-
-    #         # Renaming time column to distinguish it from other timestamp types
-    #         # table.rename(columns={'_time': 'original_time'}, inplace=True)
-
-    #         # If the query returns tables with different schemas, the result will be a list of dataframes.
-    #         if isinstance(table, list):
-    #             for item in table:
-    #                 item.rename(columns={'_time': 'original_time'}, inplace=True)
-    #                 json_result = item.to_json(orient='records', date_format='iso')
-    #                 yield json_result
-    #                 logger.info("Published multiple measurements to Quix")
-    #         elif is_dataframe(table) and len(table) > 0:
-    #                 table.rename(columns={'_time': 'original_time'}, inplace=True)
-    #                 json_result = table.to_json(orient='records', date_format='iso')
-    #                 yield json_result
-    #                 logger.info("Published single measurement to Quix")
-    #         elif is_dataframe(table) and len(table) < 1:
-    #                 logger.info("No results.")
-
-    #         logger.info(f"Trying again in {interval_seconds} seconds...")
-    #         sleep(interval_seconds)
-
-    #     except Exception as e:
-    #         logger.info("query failed")
-    #         logger.info(f"error: {e}")
-    #         flush=True
-    #         sleep(1)
-
-
-
-
 
 def main():
     """
