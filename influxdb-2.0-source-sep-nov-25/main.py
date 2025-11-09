@@ -174,7 +174,7 @@ def backfill_historical_data():
     chunk_delta = interval_to_timedelta(backfill_chunk_size)
     current_time = start_time
     
-    logger.info(f"Backfilling from {start_time} to {now} ({(now - start_time).days} days)")
+    logger.info(f"Backfilling from {start_time} to {end_time} ({(end_time - start_time).days} days)")
     
     chunk_count = 0
     total_chunks = int((now - start_time).total_seconds() / chunk_delta.total_seconds())
