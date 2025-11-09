@@ -177,7 +177,7 @@ def backfill_historical_data():
     logger.info(f"Backfilling from {start_time} to {end_time} ({(end_time - start_time).days} days)")
     
     chunk_count = 0
-    total_chunks = int((now - start_time).total_seconds() / chunk_delta.total_seconds())
+    total_chunks = int((end_time - start_time).total_seconds() / chunk_delta.total_seconds())
     
     while current_time < end_time:
         chunk_end_time = min(current_time + chunk_delta, end_time)
@@ -196,7 +196,7 @@ def backfill_historical_data():
             logger.error(f"Failed to backfill chunk {start_str} to {end_str}: {e}")
             # Continue with next chunk even if this one fails
         
-        current_time = end_time
+        current_time = chunk_end_time
         sleep(1)  # Small delay between chunks to avoid overwhelming the server
     
     logger.info(f"Backfill completed: processed {chunk_count} chunks")
