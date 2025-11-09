@@ -132,7 +132,7 @@ deployments:
         value: logs
   - name: influxdb-2.0-source-SEP-NOV-25
     application: influxdb-2.0-source-sep-nov-25
-    version: 56426377c2dee9d30a26c4bbe87d8eb93df7c71f
+    version: ec32e2d548e611e2d434457a5d8cf9fdc63f403f
     deploymentType: Service
     resources:
       cpu: 200
