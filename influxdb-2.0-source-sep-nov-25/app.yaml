@@ -3,8 +3,9 @@ language: python
 variables:
   - name: output
     inputType: OutputTopic
+    multiline: false
     description: This is the Kafka topic that will receive the query results
-    defaultValue: influxdbv2-data
+    defaultValue: sep-nov-25
     required: true
   - name: task_interval
     inputType: FreeText
