@@ -173,49 +173,6 @@ deployments:
         inputType: FreeText
         description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
         value: <INSERT MEASUREMENT>
-  - name: influxdb-2.0-source-SEP-NOV-25 2
-    application: influxdb-2.0-source-sep-nov-25
-    version: 63558ca95bd86c2e398626cb94bd0544e5063ad5
-    deploymentType: Service
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    variables:
-      - name: output
-        inputType: OutputTopic
-        description: This is the Kafka topic that will receive the query results
-        required: true
-        value: sep-nov-25
-      - name: task_interval
-        inputType: FreeText
-        description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
-        required: true
-        value: 5m
-      - name: INFLUXDB_HOST
-        inputType: FreeText
-        description: Host address for the InfluxDB instance.
-        required: true
-        value: https://influx.bermad.io
-      - name: INFLUXDB_TOKEN
-        inputType: FreeText
-        description: Authentication token to access InfluxDB.
-        required: true
-        value: Zk8O3hxhwnWY7sHbmGKs0lnS2WP6zVPGVk7N57khyNoJ3PPIIOoaWmISLCIHD5edYaFEdkTZFtfikDojvd5b1Q==
-      - name: INFLUXDB_ORG
-        inputType: FreeText
-        description: Organization name in InfluxDB.
-        required: true
-        value: primary
-      - name: INFLUXDB_BUCKET
-        inputType: FreeText
-        description: Bucket name in InfluxDB where data is stored.
-        required: true
-        value: logs
-      - name: INFLUXDB_MEASUREMENT_NAME
-        inputType: FreeText
-        description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
-        value: <INSERT MEASUREMENT>
   - name: InfluxDB v3 Sink AUG-SEP-25
     application: influxdb-v3-sink-sep-nov-25
     version: 7ecd71e8a99d524f534a5482f9c2271b14720066
@@ -257,6 +214,49 @@ deployments:
         description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
         required: true
         value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
+  - name: influxdb-2.0-source-AUG-SEP-25
+    application: influxdb-2.0-source-sep-nov-25
+    version: 63558ca95bd86c2e398626cb94bd0544e5063ad5
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    variables:
+      - name: output
+        inputType: OutputTopic
+        description: This is the Kafka topic that will receive the query results
+        required: true
+        value: aug2sep-25
+      - name: task_interval
+        inputType: FreeText
+        description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
+        required: true
+        value: 5m
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: Host address for the InfluxDB instance.
+        required: true
+        value: https://influx.bermad.io
+      - name: INFLUXDB_TOKEN
+        inputType: FreeText
+        description: Authentication token to access InfluxDB.
+        required: true
+        value: Zk8O3hxhwnWY7sHbmGKs0lnS2WP6zVPGVk7N57khyNoJ3PPIIOoaWmISLCIHD5edYaFEdkTZFtfikDojvd5b1Q==
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: Organization name in InfluxDB.
+        required: true
+        value: primary
+      - name: INFLUXDB_BUCKET
+        inputType: FreeText
+        description: Bucket name in InfluxDB where data is stored.
+        required: true
+        value: logs
+      - name: INFLUXDB_MEASUREMENT_NAME
+        inputType: FreeText
+        description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
+        value: <INSERT MEASUREMENT>
 
 # This section describes the Topics of the data pipeline
 topics:
