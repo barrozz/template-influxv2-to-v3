@@ -219,8 +219,8 @@ deployments:
     version: 63558ca95bd86c2e398626cb94bd0544e5063ad5
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 500
+      cpu: 2000
+      memory: 8000
       replicas: 1
     variables:
       - name: output
