@@ -5,7 +5,7 @@ variables:
     inputType: OutputTopic
     multiline: false
     description: This is the Kafka topic that will receive the query results
-    defaultValue: sep-nov-25
+    defaultValue: aug2sep-25
     required: true
   - name: task_interval
     inputType: FreeText
