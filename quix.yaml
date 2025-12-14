@@ -214,9 +214,9 @@ deployments:
         inputType: FreeText
         description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
         value: <INSERT MEASUREMENT>
-  - name: influxdb-2.0-source-MAY-JUNE
+  - name: influxdb-2.0-source-OCT-NOV
     application: influxdb-2.0-source-sep-nov-25
-    version: ce392c39d6cf9a643d9a8609acdf74fc1b838b52
+    version: ba37ea5280de84c8d5769337367e58471d5fb1e4
     deploymentType: Service
     resources:
       cpu: 2000
