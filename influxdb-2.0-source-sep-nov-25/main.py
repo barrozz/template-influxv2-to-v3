@@ -43,7 +43,7 @@ bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
 
 # Backfill settings
 backfill_enabled = os.environ.get("BACKFILL_ENABLED", "true").lower() == "true"
-backfill_start = os.environ.get("BACKFILL_START", "2025-05-16")     # Can be YYYY-MM-DD or -60d format
+backfill_start = os.environ.get("BACKFILL_START", "2025-10-01")     # Can be YYYY-MM-DD or -60d format
 backfill_end = os.environ.get("BACKFILL_END", "2025-05-18")         # Optional: YYYY-MM-DD format, empty means "now"
 backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "1h")
 
