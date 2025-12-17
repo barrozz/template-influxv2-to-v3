@@ -262,5 +262,8 @@ deployments:
 topics:
   - name: influxdbv2-data
   - name: influxdbv2-data-NEW
+    configuration:
+      partitions: 3
+      retentionInBytes: 2147483648
   - name: may-to-july-25
   - name: aug2sep-25
