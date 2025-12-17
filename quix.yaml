@@ -262,4 +262,6 @@ deployments:
 topics:
   - name: influxdbv2-data
   - name: may-to-july-25
+    configuration:
+      partitions: 3
   - name: aug2sep-25
