@@ -259,7 +259,7 @@ deployments:
         value: <INSERT MEASUREMENT>
   - name: influxdb-2.0-source-IDLE-LOOP
     application: influxdb-2.0-source-sep-nov-25
-    version: 9289466c8af76253786749d8172c9e4bce42f0cb
+    version: 3dc6ea3be29ef1df6fdff36dcf12cb16a302f9a0
     deploymentType: Service
     resources:
       cpu: 200
