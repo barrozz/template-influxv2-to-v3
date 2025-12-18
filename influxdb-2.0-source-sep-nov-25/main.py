@@ -251,13 +251,13 @@ def main():
                     value=serialized_value,
                 )
     
-        logger.info("=" * 60)
-        logger.info("BACKFILL FINISHED - All data transferred to topic")
-        
-        # Infinite idle loop - keeps deployment alive
-        while True:
-            logger.info("Backfill complete. Idling... (stop deployment manually when ready)")
-            sleep(600)  # Log every 10 minutes
+    logger.info("=" * 60)
+    logger.info("BACKFILL FINISHED - All data transferred to topic")
+    
+    # Infinite idle loop - keeps deployment alive
+    while True:
+        logger.info("Backfill complete. Idling... (stop deployment manually when ready)")
+        sleep(600)  # Log every 10 minutes
 
 if __name__ == "__main__":
     try:
