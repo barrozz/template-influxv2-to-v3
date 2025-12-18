@@ -214,17 +214,9 @@ def get_data():
         logger.info("Backfill mode enabled")
         for result in backfill_historical_data():
             yield result
-
+                
         logger.info("Backfill completed successfully!")
-        logger.info("=" * 60)
-        logger.info("BACKFILL FINISHED - Deployment staying alive")
-        logger.info("You can now safely STOP this deployment manually")
-        logger.info("=" * 60)
-        
-        # Infinite idle loop - keeps deployment alive
-        while True:
-            logger.info("Backfill complete. Idling... (stop deployment manually when ready)")
-            sleep(600)  # Log every 10 minutes
+
     
 
 def main():
@@ -258,6 +250,14 @@ def main():
                     key=message_key,
                     value=serialized_value,
                 )
+    
+        logger.info("=" * 60)
+        logger.info("BACKFILL FINISHED - All data transferred to topic")
+        
+        # Infinite idle loop - keeps deployment alive
+        while True:
+            logger.info("Backfill complete. Idling... (stop deployment manually when ready)")
+            sleep(600)  # Log every 10 minutes
 
 if __name__ == "__main__":
     try:
