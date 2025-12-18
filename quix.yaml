@@ -265,3 +265,5 @@ topics:
     configuration:
       partitions: 3
   - name: aug2sep-25
+    configuration:
+      retentionInBytes: 2147483648
