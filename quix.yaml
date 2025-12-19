@@ -264,8 +264,8 @@ deployments:
     version: 7ecd71e8a99d524f534a5482f9c2271b14720066
     deploymentType: Service
     resources:
-      cpu: 4000
-      memory: 16000
+      cpu: 2000
+      memory: 2000
       replicas: 1
     variables:
       - name: INPUT_TOPIC
