@@ -222,7 +222,7 @@ deployments:
     deploymentType: Service
     resources:
       cpu: 2000
-      memory: 2000
+      memory: 8000
       replicas: 1
     variables:
       - name: INPUT_TOPIC
