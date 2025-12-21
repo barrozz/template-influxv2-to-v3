@@ -304,9 +304,6 @@ deployments:
 # This section describes the Topics of the data pipeline
 topics:
   - name: influxdbv2-data
-  - name: may-to-july-25
-    configuration:
-      partitions: 3
   - name: aug2sep-25
     configuration:
       retentionInBytes: 2147483648
