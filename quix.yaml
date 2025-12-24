@@ -311,3 +311,5 @@ topics:
     configuration:
       retentionInBytes: 2147483648
   - name: june-july-25
+    configuration:
+      partitions: 8
