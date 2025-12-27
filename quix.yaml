@@ -314,3 +314,9 @@ topics:
     configuration:
       partitions: 8
       retentionInBytes: 2147483648
+  - name: july-aug-25
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: -1
+      retentionInBytes: 2147483648
