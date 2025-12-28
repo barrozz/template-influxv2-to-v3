@@ -361,3 +361,4 @@ topics:
       replicationFactor: 2
       retentionInMinutes: -1
       retentionInBytes: 2147483648
+  - name: july-25
