@@ -11,14 +11,14 @@ deployments:
     version: 4329d00b980f229618e89a2e535eb35f4696fe33
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 500
+      cpu: 2000
+      memory: 8000
       replicas: 1
     variables:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: may-to-july-25
+        value: june-july-25
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
