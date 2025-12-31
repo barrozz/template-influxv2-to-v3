@@ -314,3 +314,4 @@ topics:
   - name: july-25
     configuration:
       retentionInBytes: 2147483648
+  - name: aug-25
