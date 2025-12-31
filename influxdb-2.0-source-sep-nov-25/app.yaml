@@ -1,4 +1,4 @@
-name: influxdb-2.0-source-SEP-NOV-25
+name: influxdb-2.0-source
 language: python
 variables:
   - name: output
