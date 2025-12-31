@@ -176,7 +176,7 @@ deployments:
         inputType: FreeText
         description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
         value: <INSERT MEASUREMENT>
-  - name: InfluxDB v3 Sink june-july-25
+  - name: InfluxDB v3 Sink may-june-25
     application: influxdb-v3-sink-sep-nov-25
     version: bf43d9488467716c3dfb8434393c68e6e8f01f55
     deploymentType: Service
@@ -188,7 +188,7 @@ deployments:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: june-july-25
+        value: may-june-25
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
@@ -217,7 +217,7 @@ deployments:
         description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
         required: true
         value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
-  - name: InfluxDB v3 Sink may-june-25
+  - name: InfluxDB v3 Sink july-25
     application: influxdb-v3-sink-sep-nov-25
     version: bf43d9488467716c3dfb8434393c68e6e8f01f55
     deploymentType: Service
@@ -229,7 +229,7 @@ deployments:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: may-june-25
+        value: july-25
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
