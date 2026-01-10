@@ -174,7 +174,7 @@ deployments:
         value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
   - name: influxdb-2.0-source-aug-25
     application: influxdb-2.0-source-sep-nov-25
-    version: 8fd9a132e2ffdc2a0bedd4d049db5ad0faa15457
+    version: 5b9275a7010ced53a3a0e66ed742d8fe98f3cef1
     deploymentType: Service
     resources:
       cpu: 2000
