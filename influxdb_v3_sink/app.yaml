@@ -5,7 +5,7 @@ variables:
     inputType: InputTopic
     multiline: false
     description: The input topic from which to consume the InfluxDB v2 data
-    defaultValue: influxdbv2-data
+    defaultValue: aug-25
   - name: INFLUXDB_HOST
     inputType: FreeText
     multiline: false
