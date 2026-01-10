@@ -8,7 +8,7 @@ metadata:
 deployments:
   - name: InfluxDB v3 Sink
     application: influxdb_v3_sink
-    version: 4329d00b980f229618e89a2e535eb35f4696fe33
+    version: e0fbf9efeacbd90f4ffc3d31d4da5978ae662138
     deploymentType: Service
     resources:
       cpu: 2000
@@ -18,7 +18,7 @@ deployments:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: june-july-25
+        value: aug-25
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
