@@ -277,3 +277,4 @@ topics:
   - name: sep-25
     configuration:
       retentionInBytes: 2147483648
+  - name: telegraf
