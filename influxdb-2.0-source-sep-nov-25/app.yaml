@@ -38,6 +38,10 @@ variables:
     inputType: FreeText
     description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
     defaultValue: <INSERT MEASUREMENT>
+  - name: BACKFILL_START
+    inputType: FreeText
+    multiline: false
+    defaultValue: 2025-10-01
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
