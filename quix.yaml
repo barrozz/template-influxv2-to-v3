@@ -90,47 +90,6 @@ deployments:
         inputType: FreeText
         description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
         value: <INSERT MEASUREMENT>
-  - name: InfluxDB v3 Sink july-25
-    application: influxdb-v3-sink-sep-nov-25
-    version: bf43d9488467716c3dfb8434393c68e6e8f01f55
-    deploymentType: Service
-    resources:
-      cpu: 2000
-      memory: 8000
-      replicas: 1
-    variables:
-      - name: INPUT_TOPIC
-        inputType: InputTopic
-        description: The input topic from which to consume the InfluxDB v2 data
-        value: july-25
-      - name: INFLUXDB_HOST
-        inputType: FreeText
-        description: The address of the InfluxDB v3 instance
-        required: true
-        value: https://us-east-1-1.aws.cloud2.influxdata.com
-      - name: INFLUXDB_ORG
-        inputType: FreeText
-        description: The configured organization in the InfluxDB v3 instance
-        required: true
-        value: dev
-      - name: INFLUXDB_BUCKET
-        inputType: FreeText
-        description: The name of the InfluxDB v3 bucket to store the synced data
-        value: logs
-      - name: INFLUXDB_TOKEN
-        inputType: Secret
-        description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
-        required: true
-        secretKey: INFLUXDB_V3_TOKEN
-      - name: INFLUXDB_TAG_KEYS
-        inputType: FreeText
-        description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
-        value: '["entity_id","entity_index","entity_name","id","line","name","sensor_name","serial","switch_name","type"]'
-      - name: INFLUXDB_FIELD_KEYS
-        inputType: FreeText
-        description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
-        required: true
-        value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
   - name: influxdb-2.0-source-aug-25
     application: influxdb-2.0-source-sep-nov-25
     version: 5b9275a7010ced53a3a0e66ed742d8fe98f3cef1
