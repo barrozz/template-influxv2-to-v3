@@ -293,3 +293,6 @@ topics:
       retentionInBytes: 2147483648
   - name: telegraf
   - name: oct-25
+    configuration:
+      partitions: 4
+      retentionInBytes: 2147483648
