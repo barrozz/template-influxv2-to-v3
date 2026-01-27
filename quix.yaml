@@ -321,6 +321,47 @@ deployments:
       - name: BACKFILL_END
         inputType: FreeText
         value: 2025-11-01
+  - name: InfluxDB v3 Sink Batching 2
+    application: influxdb-v3-sink-batching
+    version: cf54a896e6177b2027e3f40345b408ffd56e735a
+    deploymentType: Service
+    resources:
+      cpu: 2000
+      memory: 8000
+      replicas: 2
+    variables:
+      - name: INPUT_TOPIC
+        inputType: InputTopic
+        description: The input topic from which to consume the InfluxDB v2 data
+        value: oct-25
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: The address of the InfluxDB v3 instance
+        required: true
+        value: https://us-east-1-1.aws.cloud2.influxdata.com
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: The configured organization in the InfluxDB v3 instance
+        required: true
+        value: dev
+      - name: INFLUXDB_BUCKET
+        inputType: FreeText
+        description: The name of the InfluxDB v3 bucket to store the synced data
+        value: logs
+      - name: INFLUXDB_TOKEN
+        inputType: Secret
+        description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
+        required: true
+        secretKey: INFLUXDB_V3_TOKEN
+      - name: INFLUXDB_TAG_KEYS
+        inputType: FreeText
+        description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
+        value: '["entity_id","entity_index","entity_name","id","line","name","sensor_name","serial","switch_name","type"]'
+      - name: INFLUXDB_FIELD_KEYS
+        inputType: FreeText
+        description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
+        required: true
+        value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
 
 # This section describes the Topics of the data pipeline
 topics:
