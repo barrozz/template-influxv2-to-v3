@@ -30,8 +30,8 @@ INFLUXDB_TAG_KEYS = os.getenv("INFLUXDB_TAG_KEYS", "[]")
 INFLUXDB_FIELD_KEYS = os.getenv("INFLUXDB_FIELD_KEYS", "[]")
 
 # Performance Tuning Parameters
-BATCH_SIZE = int(os.getenv("BATCH_SIZE", "1000"))  # Points per batch
-BATCH_TIMEOUT = float(os.getenv("BATCH_TIMEOUT", "10.0"))  # Seconds before auto-flush
+BATCH_SIZE = int(os.getenv("BATCH_SIZE", "1000"))  # Reduced from 2000 for stability
+BATCH_TIMEOUT = float(os.getenv("BATCH_TIMEOUT", "5.0"))  # Reduced from 10s
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))  # Retry attempts for failed writes
 
 # ============================================================================
@@ -184,11 +184,19 @@ def process_message(message):
     point = prepare_point(message)
     if point:
         points_batch.append(point)
+    else:
+        logger.warning("Failed to prepare point, skipping")
+        return
     
     # Check if we should flush the batch
     time_since_last_write = (datetime.datetime.utcnow() - last_write_time).total_seconds()
     
     if len(points_batch) >= BATCH_SIZE or time_since_last_write >= BATCH_TIMEOUT:
+        flush_batch()
+    
+    # Safety check: if batch is getting too large, force flush
+    if len(points_batch) > BATCH_SIZE * 1.5:
+        logger.warning(f"Batch size exceeded safe limit ({len(points_batch)}), forcing flush")
         flush_batch()
 
 
@@ -221,13 +229,32 @@ if __name__ == "__main__":
     logger.info(f"Field Keys: {field_keys}")
     logger.info("=" * 70)
     
+    # Add health check logging
+    import psutil
+    process = psutil.Process()
+    
+    def log_health():
+        mem_info = process.memory_info()
+        logger.info(f"Health: Memory={mem_info.rss / 1024 / 1024:.1f}MB, Batch={len(points_batch)}")
+    
     try:
-        app.run()  # Fixed: removed deprecated sdf argument
+        # Log initial health
+        log_health()
+        app.run()
     except KeyboardInterrupt:
         logger.info("Shutdown signal received")
+    except Exception as e:
+        logger.error(f"CRITICAL ERROR: {type(e).__name__}: {e}")
+        logger.error(f"Last known state - Written: {total_written:,}, Batch size: {len(points_batch)}")
+        # Don't suppress the error - let it crash so we can see what's wrong
+        raise
     finally:
         # Flush any remaining points on shutdown
         logger.info("Flushing remaining points...")
-        flush_batch()
+        try:
+            flush_batch()
+        except Exception as e:
+            logger.error(f"Error flushing final batch: {e}")
         logger.info(f"Final Stats - Written: {total_written:,} | Failed: {total_failed:,}")
-        logger.info("Application stopped gracefully")
+        log_health()
+        logger.info("Application stopped")
