@@ -217,20 +217,6 @@ deployments:
         description: A list of fields to select when when writing the data to InfluxDB v3 (all others will be ignored)
         required: true
         value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
-  - name: Telegraf source
-    application: telegraf-source
-    version: latest
-    deploymentType: Service
-    resources:
-      cpu: 200
-      memory: 1000
-      replicas: 1
-    variables:
-      - name: output
-        inputType: OutputTopic
-        description: This is the Quix Topic that will receive the stream
-        required: true
-        value: telegraf
   - name: InfluxDB v3 Sink Batching
     application: influxdb-v3-sink-batching
     version: e4646e4e9ebff9b4220af8f4150241c6371ed09d
