@@ -30,7 +30,7 @@ INFLUXDB_TAG_KEYS = os.getenv("INFLUXDB_TAG_KEYS", "[]")
 INFLUXDB_FIELD_KEYS = os.getenv("INFLUXDB_FIELD_KEYS", "[]")
 
 # Performance Tuning Parameters
-BATCH_SIZE = int(os.getenv("BATCH_SIZE", "2000"))  # Points per batch
+BATCH_SIZE = int(os.getenv("BATCH_SIZE", "1000"))  # Points per batch
 BATCH_TIMEOUT = float(os.getenv("BATCH_TIMEOUT", "10.0"))  # Seconds before auto-flush
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))  # Retry attempts for failed writes
 
