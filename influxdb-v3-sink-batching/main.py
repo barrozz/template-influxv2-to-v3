@@ -30,9 +30,10 @@ INFLUXDB_TAG_KEYS = os.getenv("INFLUXDB_TAG_KEYS", "[]")
 INFLUXDB_FIELD_KEYS = os.getenv("INFLUXDB_FIELD_KEYS", "[]")
 
 # Performance Tuning Parameters
-BATCH_SIZE = int(os.getenv("BATCH_SIZE", "1000"))  # Reduced from 2000 for stability
-BATCH_TIMEOUT = float(os.getenv("BATCH_TIMEOUT", "5.0"))  # Reduced from 10s
-MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))  # Retry attempts for failed writes
+BATCH_SIZE = int(os.getenv("BATCH_SIZE", "1000"))  # Smaller batches to avoid rate limits
+BATCH_TIMEOUT = float(os.getenv("BATCH_TIMEOUT", "10.0"))  # Wait longer between writes
+MAX_RETRIES = int(os.getenv("MAX_RETRIES", "5"))  # More retries for rate limits
+WRITE_DELAY = float(os.getenv("WRITE_DELAY", "0.5"))  # Delay between writes (seconds)
 
 # ============================================================================
 # SETUP
@@ -118,7 +119,7 @@ def prepare_point(message: dict) -> dict:
 
 def flush_batch():
     """
-    Write accumulated points to InfluxDB v3 with retry logic.
+    Write accumulated points to InfluxDB v3 with retry logic and rate limit handling.
     Uses exponential backoff for retries.
     """
     global points_batch, last_write_time, total_written, total_failed
@@ -150,14 +151,47 @@ def flush_batch():
             # Success - clear batch and return
             points_batch = []
             last_write_time = datetime.datetime.utcnow()
+            
+            # Add small delay between successful writes to respect rate limits
+            if WRITE_DELAY > 0:
+                sleep(WRITE_DELAY)
+            
             return
             
         except Exception as e:
+            error_str = str(e)
+            
+            # Check if it's a 429 rate limit error
+            if "429" in error_str or "Too Many Requests" in error_str or "rate limit" in error_str.lower():
+                # Extract retry-after header if available
+                retry_after = 60  # Default to 60 seconds
+                if "retry-after" in error_str.lower():
+                    try:
+                        # Try to extract the retry-after value
+                        import re
+                        match = re.search(r"retry-after['\"]:\s*['\"]?(\d+)", error_str, re.IGNORECASE)
+                        if match:
+                            retry_after = int(match.group(1))
+                    except:
+                        pass
+                
+                logger.warning(
+                    f"⚠️ Rate limit hit! InfluxDB requests to wait {retry_after}s. "
+                    f"Batch will be retried after waiting."
+                )
+                
+                # Wait the requested time plus a small buffer
+                sleep(retry_after + 5)
+                
+                # Don't count this as a retry attempt, just continue
+                continue
+                
+            # For other errors, use exponential backoff
             logger.error(f"Batch write failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
             
             if attempt < MAX_RETRIES - 1:
-                # Exponential backoff: 1s, 2s, 4s
-                sleep_time = 2 ** attempt
+                # Exponential backoff: 2s, 4s, 8s
+                sleep_time = 2 ** (attempt + 1)
                 logger.info(f"Retrying in {sleep_time}s...")
                 sleep(sleep_time)
             else:
@@ -169,8 +203,8 @@ def flush_batch():
                 )
                 # Clear batch to avoid infinite loop
                 points_batch = []
-                # Re-raise exception to let Quix handle it
-                raise
+                # Don't raise - continue processing
+                return
 
 
 def process_message(message):
