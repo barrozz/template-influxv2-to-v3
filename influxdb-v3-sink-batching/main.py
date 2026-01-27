@@ -222,7 +222,7 @@ if __name__ == "__main__":
     logger.info("=" * 70)
     
     try:
-        app.run(sdf)
+        app.run()  # Fixed: removed deprecated sdf argument
     except KeyboardInterrupt:
         logger.info("Shutdown signal received")
     finally:
