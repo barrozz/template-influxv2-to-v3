@@ -41,7 +41,7 @@ variables:
   - name: BACKFILL_START
     inputType: FreeText
     multiline: false
-    defaultValue: 2025-10-01
+    defaultValue: 2025-11-01
   - name: BACKFILL_END
     inputType: FreeText
     multiline: false
