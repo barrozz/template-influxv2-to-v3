@@ -45,7 +45,7 @@ variables:
   - name: BACKFILL_END
     inputType: FreeText
     multiline: false
-    defaultValue: 2025-11-01
+    defaultValue: 2025-12-01
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
