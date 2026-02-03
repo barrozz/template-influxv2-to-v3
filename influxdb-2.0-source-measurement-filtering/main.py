@@ -6,7 +6,7 @@ import logging
 from time import sleep
 from datetime import datetime, timedelta
 
-# import vendor-specfic modules
+# import vendor-specific modules
 from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import influxdb_client
@@ -33,7 +33,6 @@ influxdb2_client = influxdb_client.InfluxDBClient(
     token=os.environ["INFLUXDB_TOKEN"],
     org=os.environ["INFLUXDB_ORG"],
     url=os.environ['INFLUXDB_HOST']
-    # timeout=120_000  # 5 minutes in milliseconds
 )
 
 query_api = influxdb2_client.query_api()
@@ -41,17 +40,31 @@ query_api = influxdb2_client.query_api()
 interval = os.environ.get("task_interval", "5m")
 bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
 
+# ============================================================================
+# MEASUREMENT FILTERING - NEW FEATURE
+# ============================================================================
+# Specify which measurements to include
+# Options:
+#   1. Single measurement: MEASUREMENTS="sensor_data"
+#   2. Multiple measurements: MEASUREMENTS="sensor_data,logs,metrics"
+#   3. All measurements: MEASUREMENTS="" or don't set it
+measurements_str = os.environ.get("MEASUREMENTS", "wm_accumulation")
+measurements = [m.strip() for m in measurements_str.split(",") if m.strip()] if measurements_str else []
+
+# Optional: Exclude specific measurements instead
+exclude_measurements_str = os.environ.get("EXCLUDE_MEASUREMENTS", "")
+exclude_measurements = [m.strip() for m in exclude_measurements_str.split(",") if m.strip()] if exclude_measurements_str else []
+
 # Backfill settings
 backfill_enabled = os.environ.get("BACKFILL_ENABLED", "true").lower() == "true"
-backfill_start = os.environ.get("BACKFILL_START", "2025-11-01")     # Can be YYYY-MM-DD or -60d format
-backfill_end = os.environ.get("BACKFILL_END", "2025-12-01")         # Optional: YYYY-MM-DD format, empty means "now"
+backfill_start = os.environ.get("BACKFILL_START", "2026-01-01")
+backfill_end = os.environ.get("BACKFILL_END", "2026-02-01")
 backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "1h")
 
 # Global variable to control the main loop's execution
 run = True
 
 # Helper function to convert time intervals (like 1h, 2m) into seconds for easier processing.
-# This function is useful for determining the frequency of certain operations.
 UNIT_SECONDS = {
     "s": 1,
     "m": 60,
@@ -99,14 +112,48 @@ def interval_to_timedelta(interval: str) -> timedelta:
 def is_dataframe(result):
     return type(result).__name__ == 'DataFrame'
 
+def build_measurement_filter():
+    """Build Flux filter for measurements"""
+    if measurements:
+        # Include specific measurements
+        if len(measurements) == 1:
+            return f'|> filter(fn: (r) => r._measurement == "{measurements[0]}")'
+        else:
+            # Multiple measurements using OR condition
+            conditions = ' or '.join([f'r._measurement == "{m}"' for m in measurements])
+            return f'|> filter(fn: (r) => {conditions})'
+    elif exclude_measurements:
+        # Exclude specific measurements
+        if len(exclude_measurements) == 1:
+            return f'|> filter(fn: (r) => r._measurement != "{exclude_measurements[0]}")'
+        else:
+            # Multiple exclusions using AND condition
+            conditions = ' and '.join([f'r._measurement != "{m}"' for m in exclude_measurements])
+            return f'|> filter(fn: (r) => {conditions})'
+    else:
+        # No filtering - include all measurements
+        return ""
+
 def query_influx_range(start_time, end_time):
-    """Query InfluxDB for a specific time range"""
+    """Query InfluxDB for a specific time range with measurement filtering"""
+    
+    # Build measurement filter
+    measurement_filter = build_measurement_filter()
+    
     flux_query = f'''
     from(bucket: "{bucket}")
         |> range(start: {start_time}, stop: {end_time})
+        {measurement_filter}
         |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
     '''
+    
     logger.info(f"Querying range: {start_time} to {end_time}")
+    if measurements:
+        logger.info(f"  Including measurements: {', '.join(measurements)}")
+    elif exclude_measurements:
+        logger.info(f"  Excluding measurements: {', '.join(exclude_measurements)}")
+    else:
+        logger.info(f"  Including all measurements")
     
     try:
         table = query_api.query_data_frame(query=flux_query, org=os.environ['INFLUXDB_ORG'])
@@ -134,7 +181,22 @@ def query_influx_range(start_time, end_time):
 
 def backfill_historical_data():
     """Backfill historical data in chunks"""
-    logger.info(f"Starting backfill from {backfill_start} in {backfill_chunk_size} chunks")
+    logger.info("=" * 70)
+    logger.info("BACKFILL CONFIGURATION")
+    logger.info("=" * 70)
+    logger.info(f"Start: {backfill_start}")
+    logger.info(f"End: {backfill_end}")
+    logger.info(f"Chunk size: {backfill_chunk_size}")
+    logger.info(f"Bucket: {bucket}")
+    
+    if measurements:
+        logger.info(f"Measurements to include: {', '.join(measurements)}")
+    elif exclude_measurements:
+        logger.info(f"Measurements to exclude: {', '.join(exclude_measurements)}")
+    else:
+        logger.info("Measurements: ALL (no filter)")
+    
+    logger.info("=" * 70)
     
     # Calculate time ranges
     now = datetime.utcnow()
@@ -165,19 +227,17 @@ def backfill_historical_data():
             except ValueError:
                 logger.error(f"Invalid BACKFILL_END format: {backfill_end}. Use YYYY-MM-DD")
                 return
-        logger.info(f"Using specified end time: {end_time}")
     else:
         end_time = now
-        logger.info(f"No end time specified, using current time: {end_time}")
-    
 
     chunk_delta = interval_to_timedelta(backfill_chunk_size)
     current_time = start_time
     
-    logger.info(f"Backfilling from {start_time} to {end_time} ({(end_time - start_time).days} days)")
+    logger.info(f"Starting backfill from {start_time} to {end_time} ({(end_time - start_time).days} days)")
     
     chunk_count = 0
     total_chunks = int((end_time - start_time).total_seconds() / chunk_delta.total_seconds())
+    total_rows = 0
     
     while current_time < end_time:
         chunk_end_time = min(current_time + chunk_delta, end_time)
@@ -190,8 +250,15 @@ def backfill_historical_data():
         logger.info(f"Processing chunk {chunk_count}/{total_chunks}: {start_str} to {end_str}")
         
         try:
+            chunk_rows = 0
             for result in query_influx_range(start_str, end_str):
+                records = json.loads(result)
+                chunk_rows += len(records)
                 yield result
+            
+            total_rows += chunk_rows
+            logger.info(f"  ✓ Chunk complete: {chunk_rows} rows | Total so far: {total_rows:,} rows")
+            
         except Exception as e:
             logger.error(f"Failed to backfill chunk {start_str} to {end_str}: {e}")
             # Continue with next chunk even if this one fails
@@ -199,35 +266,25 @@ def backfill_historical_data():
         current_time = chunk_end_time
         sleep(1)  # Small delay between chunks to avoid overwhelming the server
     
-    logger.info(f"Backfill completed: processed {chunk_count} chunks")
+    logger.info("=" * 70)
+    logger.info(f"BACKFILL COMPLETE: {chunk_count} chunks, {total_rows:,} total rows")
+    logger.info("=" * 70)
 
-# def is_dataframe(result):
-#     return type(result).__name__ == 'DataFrame'
 
-# Function to fetch data from InfluxDB and send it to Quix
-# It runs in a continuous loop, periodically fetching data based on the interval.
 def get_data():
-    # Run in a loop until the main thread is terminated
-
-    # If backfill is enabled, do that first
+    """Fetch data from InfluxDB"""
     if backfill_enabled:
         logger.info("Backfill mode enabled")
         for result in backfill_historical_data():
             yield result
-                
         logger.info("Backfill completed successfully!")
 
-    
 
 def main():
     """
-    Read data from the Query and publish it to Kafka
+    Read data from InfluxDB v2 and publish it to Kafka
     """
-
-    # Create a pre-configured Producer object.
-    # Producer is already setup to use Quix brokers.
-    # It will also ensure that the topics exist before producing to them if
-    # Application.Quix is initialized with "auto_create_topics=True".
+    # Create a pre-configured Producer object
     producer = app.get_producer()
 
     with producer:
@@ -237,7 +294,10 @@ def main():
             for index, obj in enumerate(records):
                 # Generate a unique message_key for each row
                 message_key = f"INFLUX2_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
-                logger.info(f"Produced message with key:{message_key}, value:{obj}")
+                
+                # Only log every 100th message to reduce log spam
+                if index % 100 == 0:
+                    logger.info(f"Produced message with key:{message_key}")
 
                 # Serialize row value to bytes
                 serialized_value = serializer(
@@ -253,10 +313,11 @@ def main():
     
     logger.info("=" * 60)
     logger.info("BACKFILL FINISHED - All data transferred to topic")
+    logger.info("=" * 60)
     
     # Infinite idle loop - keeps deployment alive
     while True:
-        logger.info(f"Backfill complete from {backfill_start} to {backfill_end}. Idling... (stop deployment manually when ready)")
+        logger.info(f"Backfill complete. Idling... (stop deployment manually when ready)")
         sleep(600)  # Log every 10 minutes
 
 if __name__ == "__main__":
