@@ -33,7 +33,7 @@ INFLUXDB_FIELD_KEYS = os.getenv("INFLUXDB_FIELD_KEYS", "[]")
 BATCH_SIZE = int(os.getenv("BATCH_SIZE", "200"))  # Smaller batches to avoid rate limits
 BATCH_TIMEOUT = float(os.getenv("BATCH_TIMEOUT", "10.0"))  # Wait longer between writes
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "5"))  # More retries for rate limits
-WRITE_DELAY = float(os.getenv("WRITE_DELAY", "0.5"))  # Delay between writes (seconds)
+WRITE_DELAY = float(os.getenv("WRITE_DELAY", "1"))  # Delay between writes (seconds)
 
 # ============================================================================
 # SETUP
