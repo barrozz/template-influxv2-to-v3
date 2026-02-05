@@ -57,8 +57,8 @@ exclude_measurements = [m.strip() for m in exclude_measurements_str.split(",") i
 
 # Backfill settings
 backfill_enabled = os.environ.get("BACKFILL_ENABLED", "true").lower() == "true"
-backfill_start = os.environ.get("BACKFILL_START", "2026-01-01")
-backfill_end = os.environ.get("BACKFILL_END", "2026-02-01")
+backfill_start = os.environ.get("BACKFILL_START", "2025-12-01")
+backfill_end = os.environ.get("BACKFILL_END", "2026-01-01")
 backfill_chunk_size = os.environ.get("BACKFILL_CHUNK_SIZE", "1h")
 
 # Global variable to control the main loop's execution
