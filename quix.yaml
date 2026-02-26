@@ -475,7 +475,7 @@ deployments:
         value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
   - name: influxdb-2.0-source measurement filtering 2
     application: influxdb-2.0-source-measurement-filtering
-    version: c733b2109e74592d569818d6732f6a9dfc27da50
+    version: 540cbc45fe3abcaf75786f6c8a4e680c1ef1d730
     deploymentType: Service
     resources:
       cpu: 2000
@@ -486,7 +486,7 @@ deployments:
         inputType: OutputTopic
         description: This is the Kafka topic that will receive the query results
         required: true
-        value: nov-25-wm_accumulation
+        value: oct-25-wm_accumulation
       - name: task_interval
         inputType: FreeText
         description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
@@ -518,10 +518,10 @@ deployments:
         value: <INSERT MEASUREMENT>
       - name: BACKFILL_START
         inputType: FreeText
-        value: 2025-11-01
+        value: 2025-10-01
       - name: BACKFILL_END
         inputType: FreeText
-        value: 2025-12-01
+        value: 2025-11-01
 
 # This section describes the Topics of the data pipeline
 topics:
