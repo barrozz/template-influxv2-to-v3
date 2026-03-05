@@ -463,7 +463,7 @@ deployments:
         inputType: Secret
         description: The configured API Token to access the InfluxDB v3 instance (defined as a secret in Quix)
         required: true
-        secretKey: INFLUXDB_V3_TOKEN
+        secretKey: INFLUXDB_V3_FRA_TOKEN
       - name: INFLUXDB_TAG_KEYS
         inputType: FreeText
         description: A list of tags to select when when writing the data to InfluxDB v3 (all others will be ignored)
