@@ -444,17 +444,17 @@ deployments:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: nov-25-wm_accumulation
+        value: oct-25-wm_accumulation
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
         required: true
-        value: https://us-east-1-1.aws.cloud2.influxdata.com
+        value: https://eu-central-1-1.aws.cloud2.influxdata.com
       - name: INFLUXDB_ORG
         inputType: FreeText
         description: The configured organization in the InfluxDB v3 instance
         required: true
-        value: dev
+        value: dev-eu
       - name: INFLUXDB_BUCKET
         inputType: FreeText
         description: The name of the InfluxDB v3 bucket to store the synced data
