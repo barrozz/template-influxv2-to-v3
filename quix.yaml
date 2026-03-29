@@ -538,9 +538,6 @@ topics:
   - name: aug-25
     configuration:
       retentionInBytes: 2147483648
-  - name: sep-25
-    configuration:
-      retentionInBytes: 2147483648
   - name: telegraf
   - name: nov-25
     configuration:
