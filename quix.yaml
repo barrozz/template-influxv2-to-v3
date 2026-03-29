@@ -525,9 +525,6 @@ deployments:
 
 # This section describes the Topics of the data pipeline
 topics:
-  - name: may-june-25
-    configuration:
-      retentionInBytes: 2147483648
   - name: july-25
     configuration:
       retentionInBytes: 2147483648
