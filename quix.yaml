@@ -486,7 +486,7 @@ deployments:
         inputType: OutputTopic
         description: This is the Kafka topic that will receive the query results
         required: true
-        value: april-26-wm_accumulation
+        value: march-26-wm_accumulation
       - name: task_interval
         inputType: FreeText
         description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
@@ -518,10 +518,10 @@ deployments:
         value: <INSERT MEASUREMENT>
       - name: BACKFILL_START
         inputType: FreeText
-        value: 2025-04-01
+        value: 2025-03-01
       - name: BACKFILL_END
         inputType: FreeText
-        value: 2025-05-01
+        value: 2025-04-01
 
 # This section describes the Topics of the data pipeline
 topics:
