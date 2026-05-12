@@ -444,7 +444,7 @@ deployments:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: april-26-wm_accumulation
+        value: march-26-wm_accumulation
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
