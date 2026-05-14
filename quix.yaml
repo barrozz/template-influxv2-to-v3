@@ -439,12 +439,12 @@ deployments:
     resources:
       cpu: 2000
       memory: 8000
-      replicas: 2
+      replicas: 1
     variables:
       - name: INPUT_TOPIC
         inputType: InputTopic
         description: The input topic from which to consume the InfluxDB v2 data
-        value: december-26-wm_accumulation
+        value: jan-26-wm_accumulation
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: The address of the InfluxDB v3 instance
