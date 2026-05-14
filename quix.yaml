@@ -525,9 +525,6 @@ deployments:
 
 # This section describes the Topics of the data pipeline
 topics:
-  - name: aug-25
-    configuration:
-      retentionInBytes: 2147483648
   - name: jan_26_wm_accumulation
     configuration:
       partitions: 4
