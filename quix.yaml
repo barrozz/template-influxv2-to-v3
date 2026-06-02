@@ -475,7 +475,7 @@ deployments:
         value: '["flow","flow_avg","flow_max","flow_min","flow_sp","index","latch_position","position","pressure_p1","pressure_p1_avg","pressure_p1_max","pressure_p1_min","pressure_p2","pressure_p2_avg","pressure_p2_max","pressure_p2_min","pressure_sp","v1_cycles","v2_cycles","v_bat","value","value_avg","value_curr","value_max","value_min","valve_position","volume","water_level","water_level_avg","water_level_max","water_level_min"]'
   - name: influxdb-2.0-source measurement filtering 2
     application: influxdb-2.0-source-measurement-filtering
-    version: 540cbc45fe3abcaf75786f6c8a4e680c1ef1d730
+    version: 8194bc02fb8ddb14eb14e29b8b5f7ae94beffcc5
     deploymentType: Service
     resources:
       cpu: 2000
@@ -512,16 +512,16 @@ deployments:
         description: Bucket name in InfluxDB where data is stored.
         required: true
         value: logs
-      - name: INFLUXDB_MEASUREMENT_NAME
+      - name: MEASUREMENTS
         inputType: FreeText
         description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
         value: <INSERT MEASUREMENT>
       - name: BACKFILL_START
         inputType: FreeText
-        value: 2025-11-01
+        value: ''
       - name: BACKFILL_END
         inputType: FreeText
-        value: 2025-12-01
+        value: ''
 
 # This section describes the Topics of the data pipeline
 topics:
