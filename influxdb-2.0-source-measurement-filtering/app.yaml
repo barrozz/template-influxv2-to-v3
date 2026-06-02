@@ -34,8 +34,9 @@ variables:
     description: Bucket name in InfluxDB where data is stored.
     defaultValue: logs
     required: true
-  - name: INFLUXDB_MEASUREMENT_NAME
+  - name: MEASUREMENTS
     inputType: FreeText
+    multiline: false
     description: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used
     defaultValue: <INSERT MEASUREMENT>
   - name: BACKFILL_START
