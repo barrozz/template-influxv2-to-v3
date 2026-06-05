@@ -571,3 +571,6 @@ topics:
       partitions: 4
       retentionInBytes: 2147483648
   - name: apr-26-all-metrics
+    configuration:
+      partitions: 4
+      retentionInBytes: 2147483648
