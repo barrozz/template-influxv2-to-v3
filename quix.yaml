@@ -396,7 +396,7 @@ deployments:
         inputType: OutputTopic
         description: This is the Kafka topic that will receive the query results
         required: true
-        value: may-26-all-metrics
+        value: apr-26-all-metrics
       - name: task_interval
         inputType: FreeText
         description: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y
@@ -428,10 +428,10 @@ deployments:
         value: <INSERT MEASUREMENT>
       - name: BACKFILL_START
         inputType: FreeText
-        value: 2026-05-01
+        value: 2026-04-01
       - name: BACKFILL_END
         inputType: FreeText
-        value: 2026-06-01
+        value: 2026-05-01
   - name: InfluxDB v3 Sink Batching wm_accumulation
     application: influxdb-v3-sink-batching
     version: bc379eac3534ec4947723a5156982519ef035931
