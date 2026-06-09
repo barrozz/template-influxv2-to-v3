@@ -557,10 +557,6 @@ topics:
     configuration:
       partitions: 4
       retentionInBytes: 2147483648
-  - name: march-26-wm_accumulation
-    configuration:
-      partitions: 4
-      retentionInBytes: 2147483648
   - name: december-26-wm_accumulation
     configuration:
       partitions: 4
